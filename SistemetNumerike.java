@@ -1,20 +1,29 @@
-package Challange;
+package SistemetNumerike;
 
 import java.util.*;
 
 public class SistemetNumerike {
-
+	// Main 367
+	/**
+	 * 
+	 * @return Opsinet e Aplikacionit
+	 */
 	public static void shfaqOpsionet() {
 
 		System.out.print("\n>\n>\n>\n>\n" + "\nShtyp 1 për numra binar \n" + "Shtyp 2 për numra oktal \n"
 				+ "Shtyp 3 për numra decimal \n" + "Shtyp 4 për numra hexadecimal \n"
 				+ "Shtyp 5 per te gjeneruar Binar, Oktal, Deciaml dhe Hexadecimal  \n" + "Shtyp 6 për IP Address \n"
 				+ "Shtyp 7 për te gjeneruar IP address \n" + "Shtyp 8 për te gjeneruar MAC address \n"
-				+ "Shtyp 0 për të perfunduar Aplikacionin \n" + "\n>\n>\n>\n>\n" + "Jep numrin: ");
+				+ "Shtyp 10 për te Submituar IP address \n" + "Shtyp 0 për të perfunduar Aplikacionin \n"
+				+ "\n>\n>\n>\n>\n" + "Jep numrin: ");
 
 	}
 
-	// Decimal
+	/**
+	 * @param num     - Nurmin e inputit
+	 * @param baseNum - Nurmi i cili ben pjesitimin
+	 * @param base    - Sistemi numrik (Binar,Decimal,Oktal,Hexadeximal)
+	 */
 	public static void binarMath(int num, int baseNum, String base) {
 		long binar[] = new long[1000];
 		int index = 0;
@@ -29,13 +38,31 @@ public class SistemetNumerike {
 		System.out.print("(" + base + ")" + baseNum + "\n");
 	}
 
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Binar
+	 */
+
 	public static void decToBinar(int decimal) {
 		binarMath(decimal, 2, "Binar");
 	}
 
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Oktal
+	 */
+
 	public static void decToOktal(int decimal) {
 		binarMath(decimal, 8, "Oktal");
 	}
+
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Hexadecimal
+	 */
 
 	public static void decToHex(int decimal) {
 
@@ -51,7 +78,11 @@ public class SistemetNumerike {
 		System.out.print(hex + " (Hexadecimal)16 \n");
 	}
 
-	// Binar
+	/**
+	 * 
+	 * @param Numër Binar
+	 * @return Numër Decimal
+	 */
 
 	public static int binarToDec(String binar) {
 
@@ -61,6 +92,11 @@ public class SistemetNumerike {
 
 	}
 
+	/**
+	 * 
+	 * @param Numër Binar
+	 * @return Numër Oktal
+	 */
 	public static void binarToOktal(String binar) {
 
 		int num = Integer.parseInt(binar, 2);
@@ -69,6 +105,11 @@ public class SistemetNumerike {
 
 	}
 
+	/**
+	 * 
+	 * @param Numër Binar
+	 * @return Numër Hexadecimal
+	 */
 	public static void binarToHex(String binar) {
 		String hexadecimal = "";
 		char[] hexchars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -84,7 +125,11 @@ public class SistemetNumerike {
 
 	}
 
-//   Oktal
+	/**
+	 * 
+	 * @param Numër Oktal
+	 * @return Numër Decimal
+	 */
 	public static int oktalToDecimal(int num) {
 		int base = 1;
 		int index = 0;
@@ -99,6 +144,12 @@ public class SistemetNumerike {
 
 		return index;
 	}
+
+	/**
+	 * 
+	 * @param Numër Oktal
+	 * @return Numër Binar
+	 */
 
 	public static void oktalToBinar(int num) {
 
@@ -117,6 +168,12 @@ public class SistemetNumerike {
 
 	}
 
+	/**
+	 * 
+	 * @param Numër Oktal
+	 * @return Numër Hexadecimal
+	 */
+
 	public static void oktalToHex(int oktal) {
 
 		String hexadecimal = "";
@@ -133,7 +190,12 @@ public class SistemetNumerike {
 
 	}
 
-//  Hexadecimal
+	/**
+	 * 
+	 * @param Numër Hexadecimal
+	 * @return Numër Decimal
+	 */
+
 	public static int hexToDecimal(String hex) {
 		int num = Integer.parseInt(hex, 16);
 		return num;
@@ -147,6 +209,12 @@ public class SistemetNumerike {
 		System.out.print(binary + " (Binar)2 \n");
 
 	}
+
+	/**
+	 * 
+	 * @param Numër Hexadecimal
+	 * @return Numër Oktal
+	 */
 
 	public static void hexToOktal(String hex) {
 
@@ -165,12 +233,23 @@ public class SistemetNumerike {
 		System.out.print(" (Oktal)8 \n");
 	}
 
+	/**
+	 * 
+	 * @param Numër Binar
+	 * @return Numër Decimal, Oktal, Hexadecimal
+	 */
+
 	public static void getBinar(String binar) {
 //		binarToDec(binar);
 		binarToOktal(binar);
 		binarToHex(binar);
 	}
 
+	/**
+	 * 
+	 * @param Numër Oktal
+	 * @return Numër Binar, Decimal, Hexadecimal
+	 */
 	public static void getOktal(int oktal) {
 		System.out.print(oktalToDecimal(oktal));
 		System.out.println(" (Deciamal)10");
@@ -178,11 +257,23 @@ public class SistemetNumerike {
 		oktalToHex(oktal);
 	}
 
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Binar, Oktal, Hexadecimal
+	 */
+
 	public static void getDecimal(int decimal) {
 		decToBinar(decimal);
 		decToOktal(decimal);
 		decToHex(decimal);
 	}
+
+	/**
+	 * 
+	 * @param Numër Hexadecimal
+	 * @return Numër Binar, Oktal, Decimal
+	 */
 
 	public static void getHexa(String hex) {
 		hexToBinar(hex);
@@ -191,11 +282,22 @@ public class SistemetNumerike {
 		System.out.println("(Decimal)10");
 	}
 
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Hexadecimal
+	 */
 	public static int getDecimalGenerator() {
 		Random rand = new Random();
 		int decimal = rand.nextInt(255);
 		return decimal;
 	}
+
+	/**
+	 * 
+	 * @param Numër Decimal
+	 * @return Numër Hexadecimal
+	 */
 
 	public static String getHexaGenerator() {
 		Random rand = new Random();
@@ -203,9 +305,12 @@ public class SistemetNumerike {
 		return hexa;
 	}
 
-//ip generor
-
-	public static void IPMath(int num, int baseNum) {
+	/**
+	 * 
+	 * @param num     - Nurmin e inputit
+	 * @param baseNum - Nurmi i cili ben pjesitimin
+	 */
+	public static void IPBinaryMath(int num, int baseNum) {
 		int binar[] = new int[1000];
 		int index = 0;
 
@@ -218,14 +323,32 @@ public class SistemetNumerike {
 		}
 	}
 
+	/**
+	 * 
+	 * @param decimal Numër Decimal
+	 * @return Numer Binar
+	 */
+
 	public static void IPToBinar(int decimal) {
-		IPMath(decimal, 2);
+		IPBinaryMath(decimal, 2);
 
 	}
+
+	/**
+	 * 
+	 * @param decimal Numër Decimal
+	 * @return Numer Oktal
+	 */
 
 	public static void IPToOktal(int decimal) {
-		IPMath(decimal, 8);
+		IPBinaryMath(decimal, 8);
 	}
+
+	/**
+	 * 
+	 * @param decimal Numër Decimal
+	 * @return Numer Hexadecimal
+	 */
 
 	public static void IPToHex(int decimal) {
 
@@ -250,48 +373,68 @@ public class SistemetNumerike {
 		int choise;
 		while ((choise = s.nextInt()) > 0) {
 			if (choise == 1) {
+				boolean choise1 = false;
+				while (!choise1) {
+					try {
+						System.out.print("Shruani Numrin Binar: ");
+						String binar = s.next().replaceAll("\\s+", "");
+						getBinar(binar);
+						choise1 = true;
 
-				try {
-					System.out.print("Shruani Numrin Binar: ");
-					String binar = s.next().replaceAll("\\s+", "");
-					getBinar(binar);
-				} catch (Exception e) {
-					System.out.println(e);
-					System.out.println("Numrat binar janë: 0 dhe 1");
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat binar janë: 0 dhe 1 \n");
+						continue;
+					}
 				}
 
 			} else if (choise == 2) {
-				try {
-					System.out.print("Shruani Numrin Oktal: ");
-					int oktal = s.nextInt();
-					getOktal(oktal);
+				boolean choise2 = false;
+				while (!choise2) {
+					try {
+						System.out.print("Shruani Numrin Oktal: ");
+						int oktal = s.nextInt();
+						getOktal(oktal);
+						choise2 = true;
 
-				} catch (Exception e) {
-					System.out.println(e);
-					System.out.println("Numrat oktal janë nga 0-7");
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat oktal janë nga 0-7 \n");
+						continue;
+					}
 				}
 
 			} else if (choise == 3) {
+				boolean choise3 = false;
+				while (!choise3) {
+					try {
+						System.out.print("Shruani Numrin Decimal: ");
+						int decimal = s.nextInt();
+						getDecimal(decimal);
+						choise3 = true;
 
-				try {
-					System.out.print("Shruani Numrin Decimal: ");
-					int decimal = s.nextInt();
-					getDecimal(decimal);
-				} catch (Exception e) {
-					System.out.println(e);
-					System.out.println("Numrat oktal janë nga 0-9");
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat Decimal janë nga 0-9 \n");
+						continue;
+					}
 				}
 
 			} else if (choise == 4) {
 				// hexadecimal
+				boolean choise4 = false;
+				while (!choise4) {
+					try {
+						System.out.print("Shruani numrin Hexadeximla: ");
+						String hexa = s.next().replaceAll("\\s+", "");
+						getHexa(hexa);
+						choise4 = true;
 
-				try {
-					System.out.print("Shruani numrin Hexadeximla: ");
-					String hexa = s.next().replaceAll("\\s+", "");
-					getHexa(hexa);
-				} catch (Exception e) {
-					System.out.println(e);
-					System.out.println("Numrat hexadecimal janë nga 0-9 , a-f");
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat hexadecimal janë nga 0-9 , a-f \n");
+						continue;
+					}
 				}
 
 			} else if (choise == 5) {
@@ -432,6 +575,26 @@ public class SistemetNumerike {
 							+ getHexaGenerator() + "-" + getHexaGenerator() + "-" + getHexaGenerator());
 
 				}
+			} else if (choise == 10) {
+				boolean choise10 = false;
+				while (!choise10) {
+					try {
+						System.out.println("Shrunai IP/NetMasket");
+						System.out.print("xxx.xxx.xxx.xxx/xx: ");
+						String IPNETMASK = s.next();
+						SubmitIP submit = new SubmitIP(IPNETMASK);
+						System.out.println("\nIpja: \t\t " + IPNETMASK);
+						System.out.println("Maska e re: \t " + submit.getNetmask());
+						System.out.println("Numri i Hostave: " + submit.getHostNumber());
+						System.out.println("IP/Subnet: \t " + submit.getIPSub());
+						System.out.println("IP+Mask: \t " + submit.getCIDR());
+						System.out.println(submit.getHostAddressRange());
+					} catch (NumberFormatException e) {
+						System.out.println(e + "\n");
+						continue;
+					}
+				}
+
 			}
 
 			System.out.println("\n>\n>\n>\n>\n");
