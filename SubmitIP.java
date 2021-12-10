@@ -1,12 +1,20 @@
 package SistemetNumerike;
 
+import java.util.*;
+
 public class SubmitIP {
 
 	public int mainIPAddress; // ipja kryesore
 	public int subnetMask; // ip maska
 
+	public String typeIP; // Tipi i IP-s (A,B,C)
+	public String klasaIP; // Klasa e IP-s (Publike ose Private)
+	public int bitForMask; // Bita per secilen MaskÃ« (A-24, B-16, C-8)
+
+	public String subnetMaskNumber;
+
 	/**
-	 * Formati i IP-s në Classless inter-domain routing (CIDR) p.sh
+	 * Formati i IP-s nÃ« Classless inter-domain routing (CIDR) p.sh
 	 * SubmitIP("192.168.0.1/28");
 	 *
 	 *
@@ -19,14 +27,15 @@ public class SubmitIP {
 		String[] str = IPinCIDR.split("\\/");
 		if (str.length != 2)
 			throw new NumberFormatException(
-					"Formati i CIDR eshte i pavlefshëm  '" + IPinCIDR + "', duhet te jete: xxx.xxx.xxx.xxx/xx");
+					"Formati i CIDR eshte i pavlefshÃ«m  '" + IPinCIDR + "', duhet te jete: xxx.xxx.xxx.xxx/xx");
 
 		String symbolicIP = str[0]; // 192.168.0.1
 		String symbolicCIDR = str[1]; // 29
+		this.subnetMaskNumber = symbolicCIDR;
 
 		Integer numericCIDR = new Integer(symbolicCIDR);
 		if (numericCIDR >= 31)
-			throw new NumberFormatException("CIDR nuk mund te jete më e madhe se 30");// 30 është
+			throw new NumberFormatException("CIDR nuk mund te jete mÃ« e madhe se 30");// 30 Ã«shtÃ«
 																						// 255.255.255.252(11111111.11111111.11111111.11111100)
 		/* IP */
 		str = symbolicIP.split("\\.");
@@ -38,6 +47,37 @@ public class SubmitIP {
 		this.subnetMask = 0;
 
 		for (int n = 0; n < str.length; n++) {
+			// Deklarimi i tipit te IP-s
+
+			if (Integer.parseInt(str[0]) == 10) {
+				this.klasaIP = "A";
+				this.typeIP = "Private";
+				this.bitForMask = 24;
+			} else if (Integer.parseInt(str[0]) <= 126) {
+				this.klasaIP = "A";
+				this.typeIP = "Publike";
+				this.bitForMask = 24;
+			} else if (Integer.parseInt(str[0]) == 127 && Integer.parseInt(str[3]) == 1) {
+				this.klasaIP = "B";
+				this.typeIP = "Private";
+				this.bitForMask = 16;
+
+			} else if (Integer.parseInt(str[0]) <= 191) {
+				this.klasaIP = "B";
+				this.typeIP = "Publike";
+				this.bitForMask = 16;
+
+			} else if (Integer.parseInt(str[0]) == 192 && Integer.parseInt(str[1]) == 168) {
+				this.klasaIP = "C";
+				this.typeIP = "Private";
+				this.bitForMask = 8;
+
+			} else if (Integer.parseInt(str[0]) < 254) {
+				this.klasaIP = "C";
+				this.typeIP = "Publike";
+				this.bitForMask = 8;
+			}
+
 			int value = Integer.parseInt(str[n]);
 
 			if (value != (value & 0xff)) {
@@ -49,9 +89,13 @@ public class SubmitIP {
 
 		}
 
+		for (int n = 0; n < str.length; n++) {
+
+		}
+
 		/* netmask from CIDR */
 		if (numericCIDR < 8)
-			throw new NumberFormatException("CIDR nuk mund te jete më e vogël se 8");
+			throw new NumberFormatException("CIDR nuk mund te jete mÃ« e vogÃ«l se 8");
 		this.subnetMask = 0xffffffff;
 		this.subnetMask = this.subnetMask << (32 - numericCIDR);
 //		System.out.println(numericCIDR);// 29
@@ -61,26 +105,44 @@ public class SubmitIP {
 	}
 
 	/**
+	 * 
+	 * @return Tipin e IP-s Private Ose Publike
+	 */
+	public String getIPType() {
+		return this.typeIP;
+	}
+
+	/**
+	 * 
+	 * @return Klasen e IP-s (A B C)
+	 */
+
+	public String getIPClass() {
+		return this.klasaIP;
+	}
+
+	/**
 	 * Merr IP-n nga from xxx.xxx.xxx.xxx
 	 *
 	 * @return
 	 */
+
 	public String getIP() {
 		return converIPAddressToSymblic(this.mainIPAddress);
 	}
 
 	private String converIPAddressToSymblic(Integer ip) {
 		/*
-		 * Klasa StringBuffer përdoret për të krijuar objekte të vargut të ndryshueshëm
-		 * (të modifikueshëm). Klasa StringBuffer në Java është e njëjtë me klasën
-		 * String përveçse është e ndryshueshme, pra mund të ndryshohet
+		 * Klasa StringBuffer pÃ«rdoret pÃ«r tÃ« krijuar objekte tÃ« vargut tÃ« ndryshueshÃ«m
+		 * (tÃ« modifikueshÃ«m). Klasa StringBuffer nÃ« Java Ã«shtÃ« e njÃ«jtÃ« me klasÃ«n
+		 * String pÃ«rveÃ§se Ã«shtÃ« e ndryshueshme, pra mund tÃ« ndryshohet
 		 * 
-		 * & operator: Ai vlerëson të gjitha kushtet edhe nëse ato janë false. Kështu,
-		 * çdo ndryshim në vlerat e të dhënave për shkak të kushteve do të pasqyrohet
-		 * vetëm në këtë rast. Përdoret vetem te vleart binare p.sh
+		 * & operator: Ai vlerÃ«son tÃ« gjitha kushtet edhe nÃ«se ato janÃ« false. KÃ«shtu,
+		 * Ã§do ndryshim nÃ« vlerat e tÃ« dhÃ«nave pÃ«r shkak tÃ« kushteve do tÃ« pasqyrohet
+		 * vetÃ«m nÃ« kÃ«tÃ« rast. PÃ«rdoret vetem te vleart binare p.sh
 		 * 
-		 * 12 = 00001100 (In Binary) 25 = 00011001 (In Binary) 
-		 * 00001100 & 00011001 = 00011101 = 8 (In Decimal)
+		 * 12 = 00001100 (In Binary) 25 = 00011001 (In Binary) 00001100 & 00011001 =
+		 * 00011101 = 8 (In Decimal)
 		 */
 		StringBuffer sb = new StringBuffer(15);
 
@@ -113,17 +175,50 @@ public class SubmitIP {
 			sb.append('.');
 		}
 		sb.append(Integer.toString(this.subnetMask & 0xff));
-
 		return sb.toString();
 	}
 
 	/**
+	 * Kthe Subnet Maken nÃ« numer Binar
+	 * 
+	 * @return Binary String (Mask on Binary)
+	 */
+	public String getBinaryMask() {
+
+		return Integer.toBinaryString(this.subnetMask);
+	}
+//	public String getBinaryMask() {
+//		StringBuffer sb = new StringBuffer(15);
+//
+//		
+//		for (int i = 24; i > 0; i -= 8) {
+//
+//			// process 3 bytes, from high order byte down.
+//			sb.append(Integer.toBinaryString((this.subnetMask >>> i) & 0xff));
+//
+//			sb.append('.');
+//		}
+//		sb.append(Integer.toBinaryString(this.subnetMask & 0xff));
+//		return sb.toString();
+//		
+//	}
+
+	/**
+	 * Kthe IP-n nÃ« numer Binar
+	 * 
+	 * @return Binary String (IP on Binary)
+	 */
+	public String getBinaryIP() {
+		return Integer.toBinaryString(this.mainIPAddress);
+	}
+
+	/**
 	 *
-	 * Merr IP-n and Submitmasket në CIDR form, xxx.xxx.xxx.xxx/xx
+	 * Merr IP-n and Submitmasket nÃ« CIDR form, xxx.xxx.xxx.xxx/xx
 	 * 
 	 * Mblidhe IPAddressen me Submet Masket
 	 *
-	 * @return  Default Gateway(Subnet)
+	 * @return Default Gateway(Subnet)
 	 */
 
 	public String getCIDR() {
@@ -138,7 +233,7 @@ public class SubmitIP {
 	/**
 	 * Numrin e ipjave ne subnet
 	 *
-	 * @return IP-n e parë, IP-n e fundit dhe Broadcast IP
+	 * @return IP-n e parÃ«, IP-n e fundit dhe Broadcast IP
 	 */
 	public String getHostAddressRange() {
 
@@ -160,12 +255,13 @@ public class SubmitIP {
 		String firstIP = converIPAddressToSymblic(baseIP + 1);
 		String lastIP = converIPAddressToSymblic(baseIP + numberOfIPs - 1);
 		String broadcast = converIPAddressToSymblic(baseIP + (numberOfIPs - 1) + 1);
-		
-		return "IP-ja e parë: \t " + firstIP + "\n" + "IP-ja e Fundit:  " + lastIP + "\n" + "Broadcast: \t " + broadcast;
+
+		return "IP-ja e ParÃ«\t  :" + firstIP + "\n" + "IP-ja e Fundit    :" + lastIP + "\n" + "Broadcast:\t  :"
+				+ broadcast;
 	}
 
 	/**
-	 * Kthen numrin e hostave të IP-s
+	 * Kthen numrin e hostave tÃ« IP-s
 	 *
 	 * @return Nurmin e hostave
 	 */
@@ -194,17 +290,49 @@ public class SubmitIP {
 		return (this.getHostNumber() - 2);
 	}
 
-	public static void main(String[] args) {
-		String IP = "198.143.50.3/24";
-		SubmitIP submit = new SubmitIP(IP);
-//		System.out.println(submit.getIP() + " "+ submit.getNetmask());
-		System.out.println("Ipja: \t\t " + IP);
-		System.out.println("Maska e re: \t " + submit.getNetmask());
-		System.out.println("Numri i Hostave: " + submit.getHostNumber());
-		System.out.println("IP/Subnet: \t " + submit.getIPSub());
-		System.out.println("IP+Mask: \t " + submit.getCIDR());
-		System.out.println(submit.getHostAddressRange());
+	/**
+	 * E kthen mprapsh Strigun
+	 * 
+	 * @return Textin Mbrapsht
+	 */
+	public static String reverseString(String value) {
+		StringBuilder sb = new StringBuilder(value);
+		sb.reverse();
+		return sb.toString();
+	}
 
+	/**
+	 * 
+	 * @return Numrin e subneteve nÃ« IP
+	 */
+	public int getSubnetNumber() {
+		String y = reverseString(this.getBinaryMask()); // mund tÃ« funksionoj edhe pa reverseString
+		int zeros = y.length() - y.replaceAll("0", "").length();
+//		int bit = content.length() - content.replaceAll("1", "").length();
+
+		Double x = Math.pow(2, (this.bitForMask - zeros));
+
+		if (x == -1)
+			x = 1D;
+
+		return x.intValue();
+	}
+
+	public static void main(String[] args) {
+		String IP = "127.0.0.1/22";
+		SubmitIP submit = new SubmitIP(IP);
+//		System.out.println(submit.getIP() + " " + submit.getNetmask());
+		System.out.println("Ipja \t\t  :" + IP);
+		System.out.println("Maska e re \t  :" 		+ submit.getNetmask());
+		System.out.println("Numri i Subneteve :" 	+ submit.getSubnetNumber());
+		System.out.println("Numri i Hostave   :" 	+ submit.getHostNumber());
+		System.out.println("IP/Subnet \t  :" 		+ submit.getIPSub());
+		System.out.println("IP+Mask \t  :" 			+ submit.getCIDR());
+		System.out.println(							  submit.getHostAddressRange());
+		System.out.println("Klasa\t\t  :" 			+ submit.getIPClass());
+		System.out.println("Tipi \t\t  :" 			+ submit.getIPType());
+		System.out.println("Maska Binare \t  :"		+ submit.getBinaryMask());
+		System.out.println("IP-ja Binare \t  :" 	+ submit.getBinaryIP());
 	}
 
 }
