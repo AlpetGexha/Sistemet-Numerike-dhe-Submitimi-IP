@@ -3,6 +3,263 @@ package SistemetNumerike;
 import java.util.*;
 
 public class SistemetNumerike {
+	
+	public static void main(String[] args) {
+
+		Scanner s = new Scanner(System.in);
+		Random rand = new Random();
+		System.out.println("> Aplikacioni për Sistemin e Numrave Dhe Submitimin e IP-jave");
+		shfaqOpsionet();
+		int choise;
+		while ((choise = s.nextInt()) > 0) {
+			if (choise == 1) {
+				boolean choise1 = false;
+				while (!choise1) {
+					try {
+						System.out.print("Shruani Numrin Binar: ");
+						String binar = s.next().replaceAll("\\s+", "");
+						getBinar(binar);
+						choise1 = true;
+
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat binar janë: 0 dhe 1 \n");
+						continue;
+					}
+				}
+
+			} else if (choise == 2) {
+				boolean choise2 = false;
+				while (!choise2) {
+					try {
+						System.out.print("Shruani Numrin Oktal: ");
+						int oktal = s.nextInt();
+						getOktal(oktal);
+						choise2 = true;
+
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat oktal janë nga 0-7 \n");
+						continue;
+					}
+				}
+
+			} else if (choise == 3) {
+				boolean choise3 = false;
+				while (!choise3) {
+					try {
+						System.out.print("Shruani Numrin Decimal: ");
+						int decimal = s.nextInt();
+						getDecimal(decimal);
+						choise3 = true;
+
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat Decimal janë nga 0-9 \n");
+						continue;
+					}
+				}
+
+			} else if (choise == 4) {
+				// hexadecimal
+				boolean choise4 = false;
+				while (!choise4) {
+					try {
+						System.out.print("Shruani numrin Hexadeximla: ");
+						String hexa = s.next().replaceAll("\\s+", "");
+						getHexa(hexa);
+						choise4 = true;
+
+					} catch (Exception e) {
+						System.out.println(e);
+						System.out.println("Numrat hexadecimal janë nga 0-9 , a-f \n");
+						continue;
+					}
+				}
+
+			} else if (choise == 5) {
+				// Binar
+				// max //min //min
+				String binar = Integer.toBinaryString(rand.nextInt((1023 - 16) + 1) + 16);
+				System.out.println("Binar: \t\t" + binar);
+
+				// Oktal
+				String oktal = Integer.toOctalString(rand.nextInt(0x444));
+				System.out.println("Oktal: \t\t" + oktal);
+
+				// decimal
+				int decimal = rand.nextInt(2048);
+				System.out.println("Deciml: \t" + decimal);
+
+				// Hexadeciamls
+				String hexadecimal = Integer.toHexString(rand.nextInt(16383)); // 16*1024 - 1
+				System.out.println("Hexadecimal:    " + hexadecimal);
+
+				int choise2;
+				System.out.print("\nShtyp 0 për rezultatet: ");
+				choise2 = s.nextInt();
+				if (choise2 == 0) {
+					System.out.println("\n" + binar + " Binar");
+					getBinar(binar);
+
+					System.out.println("\n" + oktal + " Oktal");
+
+					int x = Integer.parseInt(oktal, 8);
+					System.out.println(Integer.toBinaryString(x) + " s(Binar)2");
+
+					int y = Integer.parseInt(oktal, 8);
+					System.out.println(y + " (Oktal)8");
+
+					int z = Integer.parseInt(oktal, 8);
+					System.out.println(Integer.toHexString(z) + " (Hexadecimal)16 ");
+
+					System.out.println("\n" + decimal + " Decimal");
+					getDecimal(decimal);
+
+					System.out.println("\n" + hexadecimal + " Hexadecimal");
+					getHexa(hexadecimal);
+
+				}
+
+			} else if (choise == 6) {
+
+				try {
+					System.out.print("Shruani numrin IP: ");
+					String IpAddress = s.next();
+					String IPRules = "(\\d{1,2}|(0|1)\\d{2}|2[0-4]\\d|25[0-5])"; // rregulli i IP Addreses
+
+					String IPRulesResult = IPRules + "\\." + IPRules + "\\." + IPRules + "\\." + IPRules;
+					if (IpAddress.matches(IPRulesResult)) {
+						String[] IPSplit = IpAddress.split("\\.");
+						System.out.print("Binar: \t     ");
+//						int a = IPSplit.length;
+						for (String string : IPSplit) {
+							int octet = Integer.parseInt(string);
+							String binaryOctet = Integer.toBinaryString(octet);
+							System.out.print(binaryOctet);
+							System.out.print(" ");
+						}
+						System.out.println("");
+						System.out.print("Oktal: \t     ");
+						for (String string : IPSplit) {
+							int octet = Integer.parseInt(string);
+							String octalString = Integer.toOctalString(octet);
+							System.out.print(octalString);
+
+							System.out.print(" ");
+						}
+						System.out.println("");
+						System.out.print("Hexadecimal: ");
+						for (String string : IPSplit) {
+							int octet = Integer.parseInt(string);
+							String binaryOctet = Integer.toHexString(octet);
+							System.out.print(binaryOctet);
+							System.out.print(" ");
+						}
+						System.out.println("");
+					} else {
+						System.out.println("Invalid Ip");
+						System.out.println("Ipja duhet te jete: \n " + "4 numra ku secili numer ndahet me pik (.), \n"
+								+ "Numura mund te jene nga 0-255 \n" + "P.SH: 222.21.0.211 ");
+					}
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+
+			} else if (choise == 7) {
+				int[] num = new int[4];
+
+				num[0] = getDecimalGenerator();
+				num[1] = getDecimalGenerator();
+				num[2] = getDecimalGenerator();
+				num[3] = getDecimalGenerator();
+
+				for (int i = 0; i < num.length; i++) {
+					System.out.print(num[i]);
+					if (i != num.length - 1) {
+						System.out.print(".");
+					}
+				}
+				System.out.print("\nShtyp 0 për rezultatet: ");
+				int choise1 = s.nextInt();// replaceAll("\\s+", "");
+
+				if (choise1 == 0) {
+					for (int i = 0; i < num.length; i++) {
+						IPToBinar(num[i]);
+						if (i != num.length - 1) {
+							System.out.print(".");
+						}
+					}
+					System.out.println("");
+
+					for (int i = 0; i < num.length; i++) {
+						IPToOktal(num[i]);
+						if (i != num.length - 1) {
+							System.out.print(".");
+						}
+					}
+					System.out.println("");
+					for (int i = 0; i < num.length; i++) {
+						IPToHex(num[i]);
+						if (i != num.length - 1) {
+							System.out.print(".");
+						}
+					}
+					System.out.println("");
+				}
+
+			} else if (choise == 8) {
+
+				for (int i = 0; i < 10; i++) {
+					System.out.println(getHexaGenerator() + "-" + getHexaGenerator() + "-" + getHexaGenerator() + "-"
+							+ getHexaGenerator() + "-" + getHexaGenerator() + "-" + getHexaGenerator());
+
+				}
+			} else if (choise == 10) {
+				boolean choise10 = false;
+				while (!choise10) {
+					try {
+						System.out.println("Shrunai IP/NetMasket");
+						System.out.print("xxx.xxx.xxx.xxx/xx: ");
+						String IP = s.next();
+						SubmitIP submit = new SubmitIP(IP);
+						System.out.println("Maska e re \t  :" 		+ submit.getNetmask());
+						System.out.println("Numri i Subneteve :" 	+ submit.getSubnetNumber());
+						System.out.println("Numri i Hostave   :" 	+ submit.getHostNumber());
+						System.out.println("IP/Subnet \t  :" 		+ submit.getIPSub());
+						System.out.println("IP+Mask \t  :" 			+ submit.getCIDR());
+						System.out.println(							  submit.getHostAddressRange());
+						System.out.println("Klasa\t\t  :" 			+ submit.getIPClass());
+						System.out.println("Tipi \t\t  :" 			+ submit.getIPType());
+						System.out.println("Maska Binare \t  :"		+ submit.getBinaryMask());
+						System.out.println("IP-ja Binare \t  :" 	+ submit.getBinaryIP());
+						choise10 = true;
+					} catch (NumberFormatException e) {
+						System.out.println(e + "\n");
+						continue;
+					}
+				}
+
+			}
+
+			System.out.println("\n>\n>\n>\n>\n");
+			System.out.println("> Për të vazhduar shtypni numrin Nente (9)");
+			System.out.print("Jep numrin: ");
+			if (s.nextInt() == 9)
+				shfaqOpsionet();
+
+			else
+				break;
+		}
+
+		s.close();
+
+		{
+			System.out.println("> Aplikacioni përfundoi");
+			System.exit(1);
+		}
+	}
+	
 	// Main 367
 	/**
 	 * 
@@ -364,255 +621,6 @@ public class SistemetNumerike {
 		System.out.print(hex);
 	}
 
-	public static void main(String[] args) {
 
-		Scanner s = new Scanner(System.in);
-		Random rand = new Random();
-		System.out.println("> Aplikacioni për Sistemin e Numrave");
-		shfaqOpsionet();
-		int choise;
-		while ((choise = s.nextInt()) > 0) {
-			if (choise == 1) {
-				boolean choise1 = false;
-				while (!choise1) {
-					try {
-						System.out.print("Shruani Numrin Binar: ");
-						String binar = s.next().replaceAll("\\s+", "");
-						getBinar(binar);
-						choise1 = true;
-
-					} catch (Exception e) {
-						System.out.println(e);
-						System.out.println("Numrat binar janë: 0 dhe 1 \n");
-						continue;
-					}
-				}
-
-			} else if (choise == 2) {
-				boolean choise2 = false;
-				while (!choise2) {
-					try {
-						System.out.print("Shruani Numrin Oktal: ");
-						int oktal = s.nextInt();
-						getOktal(oktal);
-						choise2 = true;
-
-					} catch (Exception e) {
-						System.out.println(e);
-						System.out.println("Numrat oktal janë nga 0-7 \n");
-						continue;
-					}
-				}
-
-			} else if (choise == 3) {
-				boolean choise3 = false;
-				while (!choise3) {
-					try {
-						System.out.print("Shruani Numrin Decimal: ");
-						int decimal = s.nextInt();
-						getDecimal(decimal);
-						choise3 = true;
-
-					} catch (Exception e) {
-						System.out.println(e);
-						System.out.println("Numrat Decimal janë nga 0-9 \n");
-						continue;
-					}
-				}
-
-			} else if (choise == 4) {
-				// hexadecimal
-				boolean choise4 = false;
-				while (!choise4) {
-					try {
-						System.out.print("Shruani numrin Hexadeximla: ");
-						String hexa = s.next().replaceAll("\\s+", "");
-						getHexa(hexa);
-						choise4 = true;
-
-					} catch (Exception e) {
-						System.out.println(e);
-						System.out.println("Numrat hexadecimal janë nga 0-9 , a-f \n");
-						continue;
-					}
-				}
-
-			} else if (choise == 5) {
-				// Binar
-				// max //min //min
-				String binar = Integer.toBinaryString(rand.nextInt((1023 - 16) + 1) + 16);
-				System.out.println("Binar: \t\t" + binar);
-
-				// Oktal
-				String oktal = Integer.toOctalString(rand.nextInt(0x444));
-				System.out.println("Oktal: \t\t" + oktal);
-
-				// decimal
-				int decimal = rand.nextInt(2048);
-				System.out.println("Deciml: \t" + decimal);
-
-				// Hexadeciamls
-				String hexadecimal = Integer.toHexString(rand.nextInt(16383)); // 16*1024 - 1
-				System.out.println("Hexadecimal:    " + hexadecimal);
-
-				int choise2;
-				System.out.print("\nShtyp 0 për rezultatet: ");
-				choise2 = s.nextInt();
-				if (choise2 == 0) {
-					System.out.println("\n" + binar + " Binar");
-					getBinar(binar);
-
-					System.out.println("\n" + oktal + " Oktal");
-
-					int x = Integer.parseInt(oktal, 8);
-					System.out.println(Integer.toBinaryString(x) + " s(Binar)2");
-
-					int y = Integer.parseInt(oktal, 8);
-					System.out.println(y + " (Oktal)8");
-
-					int z = Integer.parseInt(oktal, 8);
-					System.out.println(Integer.toHexString(z) + " (Hexadecimal)16 ");
-
-					System.out.println("\n" + decimal + " Decimal");
-					getDecimal(decimal);
-
-					System.out.println("\n" + hexadecimal + " Hexadecimal");
-					getHexa(hexadecimal);
-
-				}
-
-			} else if (choise == 6) {
-
-				try {
-					System.out.print("Shruani numrin IP: ");
-					String IpAddress = s.next();
-					String IPRules = "(\\d{1,2}|(0|1)\\d{2}|2[0-4]\\d|25[0-5])"; // rregulli i IP Addreses
-
-					String IPRulesResult = IPRules + "\\." + IPRules + "\\." + IPRules + "\\." + IPRules;
-					if (IpAddress.matches(IPRulesResult)) {
-						String[] IPSplit = IpAddress.split("\\.");
-						System.out.print("Binar: \t     ");
-//						int a = IPSplit.length;
-						for (String string : IPSplit) {
-							int octet = Integer.parseInt(string);
-							String binaryOctet = Integer.toBinaryString(octet);
-							System.out.print(binaryOctet);
-							System.out.print(" ");
-						}
-						System.out.println("");
-						System.out.print("Oktal: \t     ");
-						for (String string : IPSplit) {
-							int octet = Integer.parseInt(string);
-							String octalString = Integer.toOctalString(octet);
-							System.out.print(octalString);
-
-							System.out.print(" ");
-						}
-						System.out.println("");
-						System.out.print("Hexadecimal: ");
-						for (String string : IPSplit) {
-							int octet = Integer.parseInt(string);
-							String binaryOctet = Integer.toHexString(octet);
-							System.out.print(binaryOctet);
-							System.out.print(" ");
-						}
-						System.out.println("");
-					} else {
-						System.out.println("Invalid Ip");
-						System.out.println("Ipja duhet te jete: \n " + "4 numra ku secili numer ndahet me pik (.), \n"
-								+ "Numura mund te jene nga 0-255 \n" + "P.SH: 222.21.0.211 ");
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-
-			} else if (choise == 7) {
-				int[] num = new int[4];
-
-				num[0] = getDecimalGenerator();
-				num[1] = getDecimalGenerator();
-				num[2] = getDecimalGenerator();
-				num[3] = getDecimalGenerator();
-
-				for (int i = 0; i < num.length; i++) {
-					System.out.print(num[i]);
-					if (i != num.length - 1) {
-						System.out.print(".");
-					}
-				}
-				System.out.print("\nShtyp 0 për rezultatet: ");
-				int choise1 = s.nextInt();// replaceAll("\\s+", "");
-
-				if (choise1 == 0) {
-					for (int i = 0; i < num.length; i++) {
-						IPToBinar(num[i]);
-						if (i != num.length - 1) {
-							System.out.print(".");
-						}
-					}
-					System.out.println("");
-
-					for (int i = 0; i < num.length; i++) {
-						IPToOktal(num[i]);
-						if (i != num.length - 1) {
-							System.out.print(".");
-						}
-					}
-					System.out.println("");
-					for (int i = 0; i < num.length; i++) {
-						IPToHex(num[i]);
-						if (i != num.length - 1) {
-							System.out.print(".");
-						}
-					}
-					System.out.println("");
-				}
-
-			} else if (choise == 8) {
-
-				for (int i = 0; i < 10; i++) {
-					System.out.println(getHexaGenerator() + "-" + getHexaGenerator() + "-" + getHexaGenerator() + "-"
-							+ getHexaGenerator() + "-" + getHexaGenerator() + "-" + getHexaGenerator());
-
-				}
-			} else if (choise == 10) {
-				boolean choise10 = false;
-				while (!choise10) {
-					try {
-						System.out.println("Shrunai IP/NetMasket");
-						System.out.print("xxx.xxx.xxx.xxx/xx: ");
-						String IPNETMASK = s.next();
-						SubmitIP submit = new SubmitIP(IPNETMASK);
-						System.out.println("\nIpja: \t\t " + IPNETMASK);
-						System.out.println("Maska e re: \t " + submit.getNetmask());
-						System.out.println("Numri i Hostave: " + submit.getHostNumber());
-						System.out.println("IP/Subnet: \t " + submit.getIPSub());
-						System.out.println("IP+Mask: \t " + submit.getCIDR());
-						System.out.println(submit.getHostAddressRange());
-					} catch (NumberFormatException e) {
-						System.out.println(e + "\n");
-						continue;
-					}
-				}
-
-			}
-
-			System.out.println("\n>\n>\n>\n>\n");
-			System.out.println("> Për të vazhduar shtypni numrin Nente (9)");
-			System.out.print("Jep numrin: ");
-			if (s.nextInt() == 9)
-				shfaqOpsionet();
-
-			else
-				break;
-		}
-
-		s.close();
-
-		{
-			System.out.println("> Aplikacioni përfundoi");
-			System.exit(1);
-		}
-	}
 
 }
