@@ -1,4 +1,4 @@
-# SistemetNumerike
+# SistemetNumerike dhe Submitimi i IP-jave
 
 Convertimi i Sistemeve Numerike (Binar, Oktal, Decimal, Hexadecimal) <br/>
 Convertimi i IP-ve në Numra Binar, Oktal, Decimal, Hexadeximal <br/>
