@@ -11,7 +11,9 @@ public class SubmitIP {
 	public String klasaIP; // Klasa e IP-s (Publike ose Private)
 	public int bitForMask; // Bita per secilen Maskë (A-24, B-16, C-8)
 
-	public String subnetMaskNumber;
+	public String subnetMaskNumber; // "/29"
+
+	public String ez;
 
 	/**
 	 * Formati i IP-s në Classless inter-domain routing (CIDR) p.sh
@@ -235,8 +237,7 @@ public class SubmitIP {
 	 *
 	 * @return IP-n e parë, IP-n e fundit dhe Broadcast IP
 	 */
-	public String getHostAddressRange() {
-
+	public String getHostAddressRange(int style) {
 		int numberOfBits;
 		for (numberOfBits = 0; numberOfBits < 32; numberOfBits++) {
 
@@ -256,8 +257,11 @@ public class SubmitIP {
 		String lastIP = converIPAddressToSymblic(baseIP + numberOfIPs - 1);
 		String broadcast = converIPAddressToSymblic(baseIP + (numberOfIPs - 1) + 1);
 
-		return "IP-ja e Parë\t  :" + firstIP + "\n" + "IP-ja e Fundit    :" + lastIP + "\n" + "Broadcast:\t  :"
-				+ broadcast;
+		if (style == 1)
+			return firstIP + " - " + lastIP + "\t   " + broadcast;
+		else
+			return "IP-ja e Parë\t  :" + firstIP + "\n" + "IP-ja e Fundit    :" + lastIP + "\n" + "Broadcast:\t  :"
+					+ broadcast;
 	}
 
 	/**
@@ -303,14 +307,27 @@ public class SubmitIP {
 
 	/**
 	 * 
-	 * @return Numrin e subneteve në IP
+	 * @return Nurmin e 0 ne SubnetMask
 	 */
-	public int getSubnetNumber() {
+	public int getMaskZeorsNumber() {
 		String y = reverseString(this.getBinaryMask()); // mund të funksionoj edhe pa reverseString
 		int zeros = y.length() - y.replaceAll("0", "").length();
 //		int bit = content.length() - content.replaceAll("1", "").length();
+		return zeros;
+	}
 
-		Double x = Math.pow(2, (this.bitForMask - zeros));
+	/**
+	 * 
+	 * @return Numrin e subneteve në IP
+	 */
+	public int getSubnetNumber() {
+
+		Double x = Math.pow(2, (this.bitForMask - this.getMaskZeorsNumber()));
+		if (this.bitForMask == 8) {
+
+		} else if (this.bitForMask == 16) {
+		} else if (this.bitForMask == 24) {
+		}
 
 		if (x == -1)
 			x = 1D;
@@ -318,21 +335,67 @@ public class SubmitIP {
 		return x.intValue();
 	}
 
-	public static void main(String[] args) {
-		String IP = "127.0.0.1/22";
+	/**
+	 * 
+	 */
+	public static List<String> SubnetIpList = new ArrayList<String>();
+
+	public void getAllSubetIP() {
+		String[] str = this.getIP().split("\\.");
+
+		if (this.bitForMask == 8) {
+			int c = Integer.parseInt(str[3]) - Integer.parseInt(str[3]); // Barazo numrin e fundit me 0-ro
+			SubnetIpList.add(str[0] + "." + str[1] + "." + str[2] + "." + c);
+			for (int i = 2; c <= 255; i++) {
+				c += this.getHostNumber();
+				SubnetIpList.add(str[0] + "." + str[1] + "." + str[2] + "." + c);
+
+			}
+
+		} else if (this.bitForMask == 16) {
+			int b = Integer.parseInt(str[2]) - Integer.parseInt(str[2]);
+			int b1 = Integer.parseInt(str[3]) - Integer.parseInt(str[3]);
+			if (Integer.parseInt(this.subnetMaskNumber) <= 16 || Integer.parseInt(this.subnetMaskNumber) <= 24) {
+				SubnetIpList.add(str[0] + "." + str[1] + "." + b + "." + 0);
+
+				Double x = Math.pow(2, 8 - (this.bitForMask - this.getMaskZeorsNumber()));
+				for (int i = 2; b <= 255; i++) {
+					b += x;
+					SubnetIpList.add(str[0] + "." + str[1] + "." + b + "." + 0);
+				}
+			}
+
+		}
+
+		SubnetIpList.remove(SubnetIpList.size() - 1);
+		int subnetNumber = 0;
+		System.out.println("\nSub\t IP-ja\t\tIP-ja e parë\tIP-ja e fundit\t   Broadcast\n");
+		for (String All : SubnetIpList) {
+			subnetNumber++;
+//			System.out.println(All + "/" + this.subnetMaskNumber);
+			SubmitIP submit = new SubmitIP(All + "/" + this.subnetMaskNumber);
+
+			System.out.println(subnetNumber + "\t" + All + "\t" + submit.getHostAddressRange(1));
+		}
+
+	}
+
+	public static void main(String[] arsgs) {
+		String IP = "127.1.1.1/21";
 		SubmitIP submit = new SubmitIP(IP);
 //		System.out.println(submit.getIP() + " " + submit.getNetmask());
 		System.out.println("Ipja \t\t  :" + IP);
-		System.out.println("Maska e re \t  :" 		+ submit.getNetmask());
-		System.out.println("Numri i Subneteve :" 	+ submit.getSubnetNumber());
-		System.out.println("Numri i Hostave   :" 	+ submit.getHostNumber());
-		System.out.println("IP/Subnet \t  :" 		+ submit.getIPSub());
-		System.out.println("IP+Mask \t  :" 			+ submit.getCIDR());
-		System.out.println(							  submit.getHostAddressRange());
-		System.out.println("Klasa\t\t  :" 			+ submit.getIPClass());
-		System.out.println("Tipi \t\t  :" 			+ submit.getIPType());
-		System.out.println("Maska Binare \t  :"		+ submit.getBinaryMask());
-		System.out.println("IP-ja Binare \t  :" 	+ submit.getBinaryIP());
+		System.out.println("Maska e re \t  :" + submit.getNetmask());
+		System.out.println("Numri i Subneteve :" + submit.getSubnetNumber());
+		System.out.println("Numri i Hostave   :" + submit.getHostNumber());
+		System.out.println("IP/Subnet \t  :" + submit.getIPSub());
+		System.out.println("IP+Mask \t  :" + submit.getCIDR());
+		System.out.println(submit.getHostAddressRange(0));
+		System.out.println("Klasa\t\t  :" + submit.getIPClass());
+		System.out.println("Tipi \t\t  :" + submit.getIPType());
+		System.out.println("Maska Binare \t  :" + submit.getBinaryMask());
+		System.out.println("IP-ja Binare \t  :" + submit.getBinaryIP());
+		submit.getAllSubetIP();
 	}
 
 }
