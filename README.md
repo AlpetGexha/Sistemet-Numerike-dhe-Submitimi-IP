@@ -1,4 +1,4 @@
-# SistemetNumerike-SubmitimiIP
+# Sistemet Numerike dhe Submitimi i IPve
 ![image](https://user-images.githubusercontent.com/50520333/178273757-82107a7a-a932-460e-9a19-5b90c1d353e0.png)
 
 # Mundësit 
