@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="IP Subnet:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/IP_Subnet_jar</output-path>
+    <root id="archive" name="IP Subnet.jar">
+      <element id="module-output" name="IP Subnet" />
+    </root>
+  </artifact>
+</component>
