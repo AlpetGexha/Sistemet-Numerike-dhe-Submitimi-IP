@@ -11,17 +11,17 @@
   - Gjenerimi i IP Addresses dhe Konvertimi në Sistemin Binar në Oktal, Deciamal dhe Heksadecimal
   - Gjenerimi i MAC Addresses dhe Konvertimi në Sistemin Binar në Oktal, Deciamal dhe Heksadecimal
   - Submitimi i IP Addresses 
-  - IP-ja
-  - Maska e Re
-  - Numri i Subneteve
-  - Numri i Hostave
-  - IP për Subnet
-  - IP + Mask
-  - IP-ja e Parë
-  - IP-ja e Fundit
-  - Broadcast
-  - Klasa
-  - Tipi
-  - Maska Binare
-  - IP-ja Binare
-  - Hopi për cdo Subnet të IP-s
+    - IP-ja
+    - Maska e Re
+    - Numri i Subneteve
+    - Numri i Hostave
+    - IP për Subnet
+    - IP + Mask
+    - IP-ja e Parë
+    - IP-ja e Fundit
+    - Broadcast
+    - Klasa
+    - Tipi
+    - Maska Binare
+    - IP-ja Binare
+    - Hopi për cdo Subnet të IP-s
